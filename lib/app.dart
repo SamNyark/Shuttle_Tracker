@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pages/WelcomePage.dart';
+import 'package:get/get.dart';
 
 
 class MyApp extends StatelessWidget {
@@ -7,7 +8,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: WelcomePage()
     );
