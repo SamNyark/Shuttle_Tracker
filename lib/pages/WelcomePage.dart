@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shuttle_tracker/pages/loginPage.dart';
-import 'package:shuttle_tracker/pages/signUpPage.dart';
 import 'package:get/get.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -23,12 +21,6 @@ class WelcomePage extends StatelessWidget {
                 height: 50,
               ),
               Container(
-                  //logo,
-                  ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
                 alignment: Alignment.center,
                 child: Text(
                   "Shuttle Tracker",
@@ -39,11 +31,21 @@ class WelcomePage extends StatelessWidget {
                 height: 20,
               ),
               Container(
-                  //Told hold detailed information about the app
+                  child: Text("Your home of campride locations", style: TextStyle(fontSize: 20)),
                   ),
               SizedBox(
+                height: 10,
+              ),    
+              SizedBox(
                 height: 450,
+                //logo
               ),
+              Container(
+                  child: Text("Not a member yet? sign up", style: TextStyle(fontSize: 16)),
+                  ),
+              SizedBox(
+                height: 10,
+              ),    
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -56,7 +58,7 @@ class WelcomePage extends StatelessWidget {
                           shadowColor: Colors.grey,
                           primary: Colors.greenAccent),
                       onPressed: () {
-                        Get.to(LoginPage());
+                        Get.toNamed("/login");
                       }, //navigate to the signUp page
                       child: Text(
                         "Login",
@@ -72,7 +74,7 @@ class WelcomePage extends StatelessWidget {
                         shadowColor: Colors.grey,
                         primary: Colors.white),
                     onPressed: () {
-                      Get.to(SignUpPage());
+                      Get.toNamed("/signup");
                     }, //navigate to the signUp page
                     child: Text(
                       "Signup",
@@ -91,5 +93,3 @@ class WelcomePage extends StatelessWidget {
     );
   }
 }
-
-void navigate() {}

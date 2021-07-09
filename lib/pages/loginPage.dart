@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  Color _bottomBackground = Color(0xff0DB8C6);
-  Color _topBackground = Color(0xff0DC69E);
+  Color _bottomBackground = Color(0xffE6D56A);
+  Color _topBackground = Color(0xff806925);
+  Color _buttonColor = Color(0xff74B51F);
   bool _showPassword = true;
 
   String _email = "", _password = "";
-  String _error = "";
-  String _incorrectError = "Incorrect password";
-  String _userNotFoundError = "No user with this credentials";
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -32,9 +29,9 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [_topBackground, _bottomBackground])),
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [_bottomBackground, _topBackground])),
         child: Container(
             margin: EdgeInsets.only(
               left: 30,
@@ -48,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Container(
                       child: Text(
-                        "Login Page",
+                        "Login",
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.bold),
                       ),
@@ -58,14 +55,13 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       validator: (input) {
-                        if (input != "") {
+                        if (input == null || input.isEmpty) {
                           return "Please fill out this field";
                         } else if (!RegExp(
                                 r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
                             .hasMatch(input.toString())) {
                           return "Please fill out a valid email";
                         }
-                        return null;
                       },
                       onSaved: (input) {
                         _email = input.toString();
@@ -82,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                             borderSide: BorderSide(
                                 width: 3,
                                 style: BorderStyle.solid,
-                                color: Colors.blue)),
+                                color: _buttonColor)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
@@ -94,13 +90,13 @@ class _LoginPageState extends State<LoginPage> {
                             borderSide: BorderSide(
                                 width: 3,
                                 style: BorderStyle.solid,
-                                color: Colors.red.shade700)),
+                                color: Colors.red.shade400)),
                         focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
                                 width: 3,
                                 style: BorderStyle.solid,
-                                color: Colors.red.shade700)),
+                                color: Colors.red.shade400)),
                       ),
                     ),
                     SizedBox(
@@ -108,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextFormField(
                       validator: (input) {
-                        if (input != "") {
+                        if (input == null || input.isEmpty) {
                           return "Please fill out this field";
                         }
                         if (!RegExp(
@@ -116,7 +112,6 @@ class _LoginPageState extends State<LoginPage> {
                             .hasMatch(input.toString())) {
                           return "password must contain atleast one uppercase letter, a \nlowercase letter and a number ";
                         }
-                        return null;
                       },
                       onSaved: (input) {
                         _password = input.toString();
@@ -142,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                             borderSide: BorderSide(
                                 width: 3,
                                 style: BorderStyle.solid,
-                                color: Colors.blue)),
+                                color: _buttonColor)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
@@ -164,19 +159,25 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         GestureDetector(
                           onTap: () {
-                            //pop up dialog
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Processing Data')));
+                            //todo
                           },
                           child: Container(
                               child: Text(
                             "forget password",
-                            style: TextStyle(color: Colors.black, fontSize: 16),
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.redAccent,
+                                fontSize: 16),
                           )),
                         )
                       ],
@@ -184,20 +185,21 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 20),
                     SizedBox(
                       height: 50,
-                      width: double.infinity,
+                      width: MediaQuery.of(context).size.width * 2 / 3,
                       child: Builder(
                         builder: (context) => ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.blue,
+                              primary: _buttonColor,
                               shadowColor: Colors.red,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25),
                               )),
                           onPressed: () {
-                            /* if (_formKey.currentState.validate()) {
-                              _formKey.currentState.save();
+                            if (_formKey.currentState!.validate()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Processing Data')));
+                              _formKey.currentState!.save();
                             }
-                            */
                           },
                           child: Text(
                             "Login",
@@ -206,28 +208,30 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 30),
                     Container(
                       child: Text(
                         "Don't have an account?",
                         style: TextStyle(color: Colors.black, fontSize: 16),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       SizedBox(
-                        width: 360,
+                        width: MediaQuery.of(context).size.width * 2 / 3,
                         height: 50,
-                        child: TextButton(
-                            style: TextButton.styleFrom(
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25)),
                               primary: Colors.white,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.toNamed('/signup');
+                            },
                             child: Text("Create an account",
                                 style: TextStyle(
-                                    fontSize: 17, color: Colors.black))),
+                                    fontSize: 17, color: _buttonColor))),
                       )
                     ]),
                   ],
