@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shuttle_tracker/authentication/instanceBinding.dart';
 import 'package:shuttle_tracker/pages/MainPage.dart';
 import 'package:shuttle_tracker/pages/loginPage.dart';
 import 'package:shuttle_tracker/pages/signUpPage.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/signup', page: () => SignUpPage())
       ],
       initialRoute: "/welcome",
+      initialBinding: InstanceBinding(),
     );
   }
 }

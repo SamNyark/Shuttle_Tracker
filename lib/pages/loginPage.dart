@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shuttle_tracker/authentication/firebaseController.dart';
+import 'package:shuttle_tracker/providers/getController.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,17 +12,22 @@ class _LoginPageState extends State<LoginPage> {
   Color _bottomBackground = Color(0xffE6D56A);
   Color _topBackground = Color(0xff806925);
   Color _buttonColor = Color(0xff74B51F);
+  String _email = "", _password = "";
   bool _showPassword = true;
 
-  String _email = "", _password = "";
+  var _firebaseService = Get.find<FirebaseController>();
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  void login() {
+    _firebaseService.login(_email, _password);
+  }
 
-  void toggle() {
+  void _toggle() {
     setState(() {
       _showPassword = !_showPassword;
     });
   }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                               ? Icons.visibility
                               : Icons.visibility_off),
                           onPressed: () {
-                            toggle();
+                            _toggle();
                           },
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -199,6 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Processing Data')));
                               _formKey.currentState!.save();
+                              login();
                             }
                           },
                           child: Text(

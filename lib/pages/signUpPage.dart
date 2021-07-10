@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shuttle_tracker/providers/getController.dart';
+import '../authentication/firebaseController.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -12,10 +14,17 @@ class _SignUpPageState extends State<SignUpPage> {
   Color topBackground = Color(0xffE6D56A);
   Color bottomBackground = Color(0xff806925);
   Color _buttonColor = Color(0xff74B51F);
+  String _email = "", _password = "", _username = "";
   bool _showPassword = true;
-  String? _email, _password, _phone, _username;
+  var _firebaseService = Get.find<FirebaseController>();
+  var _getService = Get.find<GetController>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  void registration() {
+    _firebaseService.createUser(_username, _email, _password);
+  }
+
   void _toggle() {
     setState(() {
       _showPassword = !_showPassword;
@@ -49,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 20,
               ),
               Container(
-                child: Text("Signup",
+                child: Text("Registration",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -73,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             return null;
                           },
                           onSaved: (input) {
-                            _username = input;
+                            _username = input.toString();
                           },
                           decoration: InputDecoration(
                             prefixIcon: Icon(
@@ -112,7 +121,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         TextFormField(
                           validator: (input) {
-                            if (input!.isEmpty) {
+                            if (input == null || input.isEmpty) {
                               return "Please fill out this field";
                             } else if (!RegExp(
                                     r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
@@ -122,7 +131,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             return null;
                           },
                           onSaved: (input) {
-                            _email = input;
+                            _email = input.toString();
                           },
                           decoration: InputDecoration(
                             prefixIcon: Icon(
@@ -130,55 +139,6 @@ class _SignUpPageState extends State<SignUpPage> {
                               color: Colors.grey[700],
                             ),
                             hintText: "Email",
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                    color: _buttonColor,
-                                    style: BorderStyle.solid,
-                                    width: 3)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                    color: Colors.white,
-                                    style: BorderStyle.solid,
-                                    width: 3)),
-                            errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                    width: 3,
-                                    style: BorderStyle.solid,
-                                    color: Colors.red.shade400)),
-                            focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                    width: 3,
-                                    style: BorderStyle.solid,
-                                    color: Colors.red.shade400)),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          validator: (input) {
-                            if (input!.isEmpty) {
-                              return "Please fill out thi form";
-                            } else if (!RegExp(r"^\+(?:[0-9]●?){6,14}[0-9]$")
-                                .hasMatch(input)) {
-                              return "Please fill out a valid phone number";
-                            }
-                            return null;
-                          },
-                          onSaved: (input) {
-                            _phone = input;
-                          },
-                          keyboardType: TextInputType.phone,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.phone,
-                              color: Colors.grey[700],
-                            ),
-                            hintText: "Phone",
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                                 borderSide: BorderSide(
@@ -223,7 +183,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             return null;
                           },
                           onSaved: (input) {
-                            _password = input;
+                            _password = input.toString();
                           },
                           obscureText: _showPassword,
                           decoration: InputDecoration(
@@ -271,7 +231,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         SizedBox(
                             height: 50,
-                            width: MediaQuery.of(context).size.width * 2/3,
+                            width: MediaQuery.of(context).size.width * 2 / 3,
                             child: Builder(
                                 builder: (context) => ElevatedButton(
                                     child: Text(
@@ -282,14 +242,16 @@ class _SignUpPageState extends State<SignUpPage> {
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
                                         _formKey.currentState!.save();
+                                        registration();
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary: _buttonColor,
                                         padding: EdgeInsets.all(8),
                                         shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(25)
-                                        )))))],
+                                            borderRadius:
+                                                BorderRadius.circular(25))))))
+                      ],
                     )),
               ),
             ],
