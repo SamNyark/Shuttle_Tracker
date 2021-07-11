@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shuttle_tracker/authentication/instanceBinding.dart';
+import 'package:shuttle_tracker/providers/instanceBinding.dart';
 import 'package:shuttle_tracker/pages/MainPage.dart';
 import 'package:shuttle_tracker/pages/loginPage.dart';
 import 'package:shuttle_tracker/pages/signUpPage.dart';
+import 'package:shuttle_tracker/providers/isSignedIn.dart';
 import 'pages/WelcomePage.dart';
 import 'package:get/get.dart';
 
@@ -18,9 +19,10 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/main', page: () => MainPage()),
         GetPage(name: '/welcome', page: () => WelcomePage()),
         GetPage(name: '/login', page: () => LoginPage()),
-        GetPage(name: '/signup', page: () => SignUpPage())
+        GetPage(name: '/signup', page: () => SignUpPage()),
+        GetPage(name: '/isSignedIn', page: () => IsSignedIn())
       ],
-      initialRoute: "/welcome",
+      initialRoute: "/isSignedIn",
       initialBinding: InstanceBinding(),
     );
   }

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
 class FirebaseController extends GetxController {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,17 +21,18 @@ class FirebaseController extends GetxController {
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) => Get.offAllNamed("/login"))
         // ignore: invalid_return_type_for_catch_error
-        .catchError((onError) => Get.snackbar("Unable to create account", onError.message));
+        .catchError((onError) => Get.snackbar("Failed", onError.message, backgroundColor: Colors.red.shade400, colorText: Colors.white));
   }
 
   void login(String email, String password) async {
     _auth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) => Get.offAllNamed("/main"))
-        .catchError((onError) => Get.snackbar("Login failed", onError.message));
+        // ignore: invalid_return_type_for_catch_error
+        .catchError((onError) => Get.snackbar("Login failed", onError.message, backgroundColor: Colors.red.shade400, colorText: Colors.white));
   }
 
   void signOut() {
-    _auth.signOut();
+    _auth.signOut().then((value) => Get.offAllNamed("/welcome"));
   }
 }
