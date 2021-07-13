@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 class FirebaseController extends GetxController {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Rxn<User?> _firebaseUser = Rxn<User>();
+  Rxn<User> _firebaseUser = Rxn<User>();
 
-  String? get user => _firebaseUser.value!.email;
+  String? get user => _firebaseUser.value?.email;
 
   @override
   void onInit() {

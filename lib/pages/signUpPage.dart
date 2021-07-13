@@ -17,7 +17,6 @@ class _SignUpPageState extends State<SignUpPage> {
   String _email = "", _password = "", _username = "";
   bool _showPassword = true;
   var _firebaseService = Get.find<FirebaseController>();
-  var _getService = Get.find<GetController>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -232,25 +231,51 @@ class _SignUpPageState extends State<SignUpPage> {
                         SizedBox(
                             height: 50,
                             width: MediaQuery.of(context).size.width * 2 / 3,
-                            child: Builder(
-                                builder: (context) => ElevatedButton(
-                                    child: Text(
-                                      "sign up",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
-                                    ),
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        _formKey.currentState!.save();
-                                        registration();
-                                      }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary: _buttonColor,
-                                        padding: EdgeInsets.all(8),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(25))))))
+                            child: ElevatedButton(
+                                child: Text(
+                                  "sign up",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    registration();
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    primary: _buttonColor,
+                                    padding: EdgeInsets.all(8),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(25))))),
+                        SizedBox(height: 15),
+                        Text(
+                          
+                          "Already have an account?",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        SizedBox(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 2 / 3,
+                            child: ElevatedButton(
+                                child: Text(
+                                  "login",
+                                  style: TextStyle(
+                                      fontSize: 20, color: _buttonColor),
+                                ),
+                                onPressed: () {
+                                  Get.toNamed('/login');
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                    padding: EdgeInsets.all(8),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(25)))))
                       ],
                     )),
               ),

@@ -16,8 +16,6 @@ class _IsSignedInState extends State<IsSignedIn> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-       () => Get.find<FirebaseController>().user != null ? MainPage() : WelcomePage()
-      
-    );
+       () => Get.find<FirebaseController>().user == null ? WelcomePage() : MainPage());
   }
 }

@@ -6,6 +6,10 @@
    <application
         android:label="shuttle_tracker"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyDsg9EqBISWLfzWpKnuoLv80rlr6-2PbMU"/> 
+               
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -22,8 +26,7 @@
               android:resource="@style/NormalTheme"
               />
 
-            <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyB8HL2U59zamx42e2fDDOcWg9qI4Q9HYVQ"/>  
+             
             <!-- Displays an Android View that continues showing the launch screen
                  Drawable until Flutter paints its first frame, then this splash
                  screen fades out. A splash screen is useful to avoid any visual
