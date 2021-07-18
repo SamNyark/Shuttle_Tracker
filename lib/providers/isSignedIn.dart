@@ -13,9 +13,10 @@ class IsSignedIn extends StatefulWidget {
 }
 
 class _IsSignedInState extends State<IsSignedIn> {
+  var users = Get.find<FirebaseController>();
   @override
   Widget build(BuildContext context) {
     return Obx(
-       () => Get.find<FirebaseController>().user == null ? WelcomePage() : MainPage());
+       () => users.user == null ? WelcomePage() : MainPage());
   }
 }

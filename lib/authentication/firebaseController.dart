@@ -19,9 +19,13 @@ class FirebaseController extends GetxController {
   void createUser(String username, String email, String password) async {
     await _auth
         .createUserWithEmailAndPassword(email: email, password: password)
-        .then((value) => Get.offAllNamed("/login"))
+        .then((value) {
+      Get.defaultDialog(content: Text("loading"));
+      Get.offAllNamed("/login");
+    })
         // ignore: invalid_return_type_for_catch_error
-        .catchError((onError) => Get.snackbar("Failed", onError.message, backgroundColor: Colors.red.shade400, colorText: Colors.white));
+        .catchError((onError) => Get.snackbar("Failed", onError.message,
+            backgroundColor: Colors.red.shade400, colorText: Colors.white));
   }
 
   void login(String email, String password) async {
@@ -29,7 +33,8 @@ class FirebaseController extends GetxController {
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) => Get.offAllNamed("/main"))
         // ignore: invalid_return_type_for_catch_error
-        .catchError((onError) => Get.snackbar("Login failed", onError.message, backgroundColor: Colors.red.shade400, colorText: Colors.white));
+        .catchError((onError) => Get.snackbar("Login failed", onError.message,
+            backgroundColor: Colors.red.shade400, colorText: Colors.white));
   }
 
   void signOut() {

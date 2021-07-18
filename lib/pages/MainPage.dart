@@ -15,25 +15,48 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   GoogleMapController? _controller;
-  List<Marker> _marker = [];
+  Circle? circle;
+  Marker? marker;
 
   Location _locationTracker = Location();
-  LocationData? newLocalData;
-  CameraPosition _position =
-      CameraPosition(target: LatLng(6.670242, -1.562808), zoom: 17);
+  CameraPosition _position = CameraPosition(target: LatLng(6.658335, -1.567672), zoom: 15);
 
   var _fcontroller = Get.find<FirebaseController>();
 
   void getLocation() async {
     try {
-      await _locationTracker.getLocation();
-      _marker.add(Marker(markerId: MarkerId("value"), position: LatLng(newLocalData!.latitude as double,
-              newLocalData!.longitude as double)));
+      var location = await _locationTracker.getLocation();
+      updateCircle(location);
+       _controller!.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          zoom: 15,
+          target: LatLng(
+              location.latitude as double, location.longitude as double))));
+              _position = CameraPosition(target: LatLng(location.latitude as double, location.longitude as double), zoom: 15);
+       
     } on PlatformException catch (e) {
       if (e.code == "PERMISSION_DENIED") {
         Get.snackbar("Permission Error", e.message as String);
       }
     }
+  }
+
+  void updateCircle(LocationData data) {
+    LatLng _latlng = LatLng(data.latitude as double, data.longitude as double);
+    this.setState(() {
+      circle = Circle(
+          circleId: CircleId("circle"),
+          center: _latlng,
+          radius: data.accuracy as double,
+          zIndex: 1,
+          strokeColor: Colors.blue,
+          strokeWidth: 15
+          );
+      marker = Marker(
+        markerId: MarkerId("marker"),
+        zIndex: 2,
+        position: _latlng,
+      );
+    });
   }
 
   @override
@@ -49,11 +72,10 @@ class _MainPageState extends State<MainPage> {
         mapType: MapType.normal,
         initialCameraPosition: _position,
         zoomControlsEnabled: false,
-        markers: _marker.toSet(),
+        circles: Set.of((circle != null) ? [circle!] : []),
+        markers: Set.of((marker != null) ? [marker!] : []),
         onMapCreated: (GoogleMapController controller) {
-          controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(newLocalData!.latitude as double,
-              newLocalData!.longitude as double))));
+          controller = _controller as GoogleMapController;
         },
       ),
       floatingActionButton: FloatingActionButton(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shuttle_tracker/authentication/firebaseController.dart';
 import 'package:shuttle_tracker/providers/getController.dart';
+import '../providers/instanceBinding.dart';
 
 class LoginPage extends StatefulWidget {
   @override
