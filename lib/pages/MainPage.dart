@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,22 +20,31 @@ class _MainPageState extends State<MainPage> {
   GoogleMapController? _controller;
   Circle? circle;
   Marker? marker;
+  var locationUpdate;
+  StreamSubscription? _locationSubscription;
 
   Location _locationTracker = Location();
-  CameraPosition _position = CameraPosition(target: LatLng(6.658335, -1.567672), zoom: 15);
 
   var _fcontroller = Get.find<FirebaseController>();
 
   void getLocation() async {
     try {
-      var location = await _locationTracker.getLocation();
-      updateCircle(location);
-       _controller!.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          zoom: 15,
-          target: LatLng(
-              location.latitude as double, location.longitude as double))));
-              _position = CameraPosition(target: LatLng(location.latitude as double, location.longitude as double), zoom: 15);
-       
+
+      locationUpdate = await _locationTracker.getLocation();
+      updateCircle(locationUpdate);
+
+      _locationSubscription =
+          _locationTracker.onLocationChanged.listen((localData) {
+        setState(() {
+          _controller!.animateCamera(CameraUpdate.newCameraPosition(
+              CameraPosition(
+                  zoom: 20,
+                  tilt: 0,
+                  target: LatLng(localData.latitude as double,
+                      localData.longitude as double))));
+        });
+        updateCircle(localData);
+      });
     } on PlatformException catch (e) {
       if (e.code == "PERMISSION_DENIED") {
         Get.snackbar("Permission Error", e.message as String);
@@ -49,8 +61,7 @@ class _MainPageState extends State<MainPage> {
           radius: data.accuracy as double,
           zIndex: 1,
           strokeColor: Colors.blue,
-          strokeWidth: 15
-          );
+          strokeWidth: 15);
       marker = Marker(
         markerId: MarkerId("marker"),
         zIndex: 2,
@@ -70,7 +81,9 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       body: GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition: _position,
+        initialCameraPosition: CameraPosition(
+            target: LatLng(locationUpdate.latitude, locationUpdate.longitude),
+            zoom: 16),
         zoomControlsEnabled: false,
         circles: Set.of((circle != null) ? [circle!] : []),
         markers: Set.of((marker != null) ? [marker!] : []),
