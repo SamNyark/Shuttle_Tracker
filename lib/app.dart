@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       getPages: [
         GetPage(name: '/main', page: () => MainPage()),
-        GetPage(name: '/welcome', page: () => WelcomePage()),
-        GetPage(name: '/login', page: () => LoginPage()),
-        GetPage(name: '/signup', page: () => SignUpPage()),
+        GetPage(name: '/welcome', page: () => WelcomePage(), binding: InstanceBinding()),
+        GetPage(name: '/login', page: () => LoginPage(), binding: InstanceBinding()),
+        GetPage(name: '/signup', page: () => SignUpPage(), binding: InstanceBinding()),
         GetPage(name: '/isSignedIn', page: () => IsSignedIn())
       ],
       initialRoute: "/isSignedIn",

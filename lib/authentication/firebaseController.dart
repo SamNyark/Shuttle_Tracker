@@ -17,8 +17,10 @@ class FirebaseController extends GetxController {
   }
 
   void createUser(String username, String email, String password) async {
+    Get.dialog(CircularProgressIndicator());
     await _auth
-        .createUserWithEmailAndPassword(email: email, password: password)
+        .createUserWithEmailAndPassword(
+            email: email.trim(), password: password.trim())
         .then((value) {
       Get.defaultDialog(content: Text("loading"));
       Get.offAllNamed("/login");
@@ -29,8 +31,10 @@ class FirebaseController extends GetxController {
   }
 
   void login(String email, String password) async {
+    Get.dialog(CircularProgressIndicator());
     _auth
-        .signInWithEmailAndPassword(email: email, password: password)
+        .signInWithEmailAndPassword(
+            email: email.trim(), password: password.trim())
         .then((value) => Get.offAllNamed("/main"))
         // ignore: invalid_return_type_for_catch_error
         .catchError((onError) => Get.snackbar("Login failed", onError.message,
