@@ -29,7 +29,6 @@ class _MainPageState extends State<MainPage> {
 
   void getLocation() async {
     try {
-
       locationUpdate = await _locationTracker.getLocation();
       updateCircle(locationUpdate);
 
@@ -79,6 +78,9 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(),
+      ),
       body: GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(

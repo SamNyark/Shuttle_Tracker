@@ -31,7 +31,7 @@ class FirebaseController extends GetxController {
   }
 
   void login(String email, String password) async {
-    Get.dialog(CircularProgressIndicator());
+    Get.defaultDialog(content: CircularProgressIndicator(), title: "");
     _auth
         .signInWithEmailAndPassword(
             email: email.trim(), password: password.trim())
