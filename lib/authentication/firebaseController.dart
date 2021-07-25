@@ -14,6 +14,7 @@ class FirebaseController extends GetxController {
   @override
   void onInit() {
     _firebaseUser.bindStream(_auth.authStateChanges());
+    super.onInit();
   }
 
   void createUser(String username, String email, String password) async {
